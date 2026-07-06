@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # tussen
 
 A new Flutter project.
@@ -15,3 +16,6 @@ A few resources to get you started if this is your first Flutter project:
 For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
+=======
+Starting app
+>>>>>>> 86927448d359026201a4c7e729b1d37b5f48cb7b
