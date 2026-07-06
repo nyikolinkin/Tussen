@@ -23,10 +23,24 @@ class TussenTextField extends StatelessWidget {
       keyboardType: keyboardType,
       obscureText: obscureText,
       decoration: InputDecoration(
-        prefixIcon: Icon(icon),
         hintText: hint,
-        border: OutlineInputBorder(
+        prefixIcon: Icon(icon),
+        filled: true,
+        fillColor: Colors.grey.shade100,
+
+        enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
+          borderSide: BorderSide(
+            color: Colors.grey.shade300,
+          ),
+        ),
+
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(14),
+          borderSide: const BorderSide(
+            color: Colors.amber,
+            width: 2,
+          ),
         ),
       ),
     );

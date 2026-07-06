@@ -7,6 +7,8 @@ import '../../../core/widgets/tussen_outlined_button.dart';
 import '../../../core/widgets/tussen_scaffold.dart';
 import '../../../core/widgets/tussen_text_button.dart';
 import 'login_screen.dart';
+import 'package:go_router/go_router.dart';
+import '../../../app/router/app_routes.dart';
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});
@@ -39,14 +41,8 @@ class WelcomeScreen extends StatelessWidget {
           TussenButton(
             text: 'Get a Ride',
             onPressed: () {
-              // TODO: Navigate to Passenger Login
-              Navigator.push(
-  context,
-  MaterialPageRoute(
-    builder: (_) => const LoginScreen(),
-  ),
-);
-            },
+              context.go(AppRoutes.login);
+                          },
           ),
 
           const SizedBox(height: 16),

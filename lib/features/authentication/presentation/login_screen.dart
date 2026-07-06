@@ -6,6 +6,9 @@ import '../../../core/widgets/tussen_logo.dart';
 import '../../../core/widgets/tussen_scaffold.dart';
 import '../../../core/widgets/tussen_text_button.dart';
 import '../../../core/widgets/tussen_text_field.dart';
+import 'package:go_router/go_router.dart';
+
+import '../../../app/router/app_routes.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -51,7 +54,7 @@ class LoginScreen extends StatelessWidget {
           TussenButton(
             text: 'Continue',
             onPressed: () {
-              // TODO: Navigate to OTP Screen
+            context.go(AppRoutes.otp);
             },
           ),
 
