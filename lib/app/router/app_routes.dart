@@ -14,4 +14,16 @@ class AppRoutes {
   // Home
   static const passengerHome = '/passenger-home';
   static const driverHome = '/driver-home';
+
+  // Locations
+  static const locationSearch = '/location-search';
+
+  // Navigation
+  static const trips = '/trips';
+  static const wallet = '/wallet';
+  static const profile = '/profile';
+
+  // Ride Request
+  static const searchingDriver = '/searching-driver';
+  static const driverFound = '/driver-found';
 }

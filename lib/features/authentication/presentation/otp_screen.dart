@@ -5,6 +5,8 @@ import '../../../core/widgets/tussen_button.dart';
 import '../../../core/widgets/tussen_logo.dart';
 import '../../../core/widgets/tussen_scaffold.dart';
 import '../../../core/widgets/tussen_otp_field.dart';
+import 'package:go_router/go_router.dart';
+import '../../../app/router/app_routes.dart';
 
 class OtpScreen extends StatelessWidget {
   const OtpScreen({super.key});
@@ -48,7 +50,9 @@ class OtpScreen extends StatelessWidget {
 
           TussenButton(
             text: "Verify",
-            onPressed: () {},
+            onPressed: () { 
+              context.go(AppRoutes.completeProfile); 
+            },
           ),
         ],
       ),
