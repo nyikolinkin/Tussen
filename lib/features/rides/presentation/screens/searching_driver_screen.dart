@@ -7,6 +7,7 @@ import '../../../../core/widgets/feedback/animated_status_text.dart';
 import '../widgets/cancel_request_button.dart';
 import '../widgets/searching_header.dart';
 import '../widgets/searching_indicator.dart';
+//import 'package:tussen/features/rides/presentation/screens/available_drivers_screen.dart';
 
 class SearchingDriverScreen extends StatelessWidget {
   const SearchingDriverScreen({super.key});
@@ -34,7 +35,7 @@ class SearchingDriverScreen extends StatelessWidget {
                 ],
                 style: AppTextStyles.body,
                 onCompleted: () {
-                  context.go(AppRoutes.driverFound);
+                  context.go(AppRoutes.availableDrivers);
                 },
               ),
 

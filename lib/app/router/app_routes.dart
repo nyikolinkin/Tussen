@@ -26,4 +26,7 @@ class AppRoutes {
   // Ride Request
   static const searchingDriver = '/searching-driver';
   static const driverFound = '/driver-found';
+  static const availableDrivers = '/available-drivers';
+  static const waitingForDriverResponse = '/waiting-for-driver-response';
+  static const rideTracking = '/ride-tracking';
 }

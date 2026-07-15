@@ -6,7 +6,7 @@ class AppColors {
   static const Color primary = Color(0xFFF4B400);
 static const Color accent = Color(0xFFF4B400);
 
-static const Color background = Colors.white;
+static const Color background = Color.fromARGB(255, 240, 234, 234);
 
 static const Color textPrimary = Color(0xFF1E1E1E);
 
