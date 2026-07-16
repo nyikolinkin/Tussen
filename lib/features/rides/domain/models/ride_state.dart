@@ -1,4 +1,4 @@
-import 'driver_card.dart';
+import 'driver.dart';
 import 'ride_stage.dart';
 
 class RideState {

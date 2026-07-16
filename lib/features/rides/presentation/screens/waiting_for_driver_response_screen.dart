@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../app/theme/app_text_styles.dart';
-import '../../domain/models/driver_card.dart';
+import '../../domain/models/driver.dart';
 import '../widgets/driver_card.dart';
 
 class WaitingForDriverResponseScreen extends StatelessWidget {

@@ -1,4 +1,4 @@
-import '../../../rides/domain/models/driver_card.dart';
+import '../../../rides/domain/models/driver.dart';
 import '../../../../core/enums/gender.dart';
 import '../../../../core/enums/driver_status.dart';
 

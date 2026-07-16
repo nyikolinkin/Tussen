@@ -18,7 +18,7 @@ import '../../features/passenger/presentation/wallet_screen.dart';
 import '../../features/splash/presentation/splash_screen.dart';
 import '../../../features/rides/presentation/screens/driver_found_screen.dart';
 import '../../../features/rides/presentation/screens/searching_driver_screen.dart';
-import '../../features/rides/domain/models/driver_card.dart';
+import '../../features/rides/domain/models/driver.dart';
 import '../../features/rides/presentation/screens/waiting_for_driver_response_screen.dart';
 import '../../features/rides/presentation/screens/ride_tracking_screen.dart';
 

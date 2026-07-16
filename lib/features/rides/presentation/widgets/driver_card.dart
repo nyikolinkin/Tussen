@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../rides/domain/models/driver_card.dart';
+import '../../../rides/domain/models/driver.dart';
 import 'driver_avatar.dart';
 
 class DriverCard extends StatelessWidget {

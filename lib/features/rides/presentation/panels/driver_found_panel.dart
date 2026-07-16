@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../domain/models/driver_card.dart';
+import '../../domain/models/driver.dart';
 import '../../domain/models/ride_stage.dart';
 import '../../providers/ride_state_provider.dart';
 import '../widgets/driver_card.dart';

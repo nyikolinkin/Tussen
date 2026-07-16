@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../providers/ride_state_provider.dart';
-import '../panels/searching_panel.dart';
+//import '../panels/searching_panel.dart';
 import '../widgets/ride_stage_panel.dart';
 
 class RideTrackingScreen extends ConsumerWidget {

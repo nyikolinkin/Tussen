@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../domain/models/driver_card.dart';
+import '../../domain/models/driver.dart';
 import '../widgets/driver_card.dart';
 import '../widgets/ride_bottom_panel.dart';
 

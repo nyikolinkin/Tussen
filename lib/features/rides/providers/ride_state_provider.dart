@@ -2,7 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/enums/driver_status.dart';
 import '../../../../core/enums/gender.dart';
-import '../domain/models/driver_card.dart';
+import '../domain/models/driver.dart';
 import '../domain/models/ride_stage.dart';
 import '../domain/models/ride_state.dart';
 
