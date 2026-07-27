@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../providers/ride_state_provider.dart';
-//import '../panels/searching_panel.dart';
 import '../widgets/ride_stage_panel.dart';
+import '../../../../core/widgets/tussen_map.dart';
+//import '../../../../core/maps/providers/map_simulator_provider.dart';
+//import '../../providers/ride_controller_provider.dart';
 
 class RideTrackingScreen extends ConsumerWidget {
   const RideTrackingScreen({super.key});
@@ -18,15 +20,7 @@ class RideTrackingScreen extends ConsumerWidget {
       ),
       body: Stack(
         children: [
-          Container(
-            color: Colors.grey.shade300,
-            child: const Center(
-              child: Text(
-                'Google Map Placeholder',
-                style: TextStyle(fontSize: 24),
-              ),
-            ),
-          ),
+          const TussenMap(),
 
           const Align(
             alignment: Alignment.bottomCenter,
@@ -35,13 +29,13 @@ class RideTrackingScreen extends ConsumerWidget {
         ],
       ),
 
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          ref.read(rideStateProvider.notifier).nextStage();
-        },
-        icon: const Icon(Icons.bug_report),
-        label: const Text('Next Stage'),
-      ),
+      //floatingActionButton: FloatingActionButton.extended(
+        //onPressed: () {
+          //ref.read(rideControllerProvider).requestRide();
+        //},
+        //icon: const Icon(Icons.bug_report),
+        //label: const Text('Next Stage'),
+      //),
     );
   }
 }

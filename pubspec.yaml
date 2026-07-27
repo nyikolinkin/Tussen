@@ -42,6 +42,7 @@ dependencies:
 
   # Fonts
   google_fonts: ^6.3.0
+  google_maps_flutter: ^2.17.1
 
 # The following section is specific to Flutter packages.
 flutter:

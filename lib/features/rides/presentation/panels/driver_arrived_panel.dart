@@ -1,11 +1,13 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 
 import '../../domain/models/driver.dart';
 import '../widgets/driver_card.dart';
 import '../widgets/ride_bottom_panel.dart';
 import '../widgets/ride_header.dart';
+import '../../../rides/providers/ride_controller_provider.dart';
 
-class DriverArrivedPanel extends StatelessWidget {
+class DriverArrivedPanel extends ConsumerWidget {
   final Driver driver;
 
   const DriverArrivedPanel({
@@ -14,7 +16,7 @@ class DriverArrivedPanel extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return RideBottomPanel(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -36,7 +38,7 @@ class DriverArrivedPanel extends StatelessWidget {
             width: double.infinity,
             child: FilledButton.icon(
               onPressed: () {
-                // We'll connect this later
+                ref.read(rideControllerProvider).startTrip();
               },
               icon: const Icon(Icons.directions_car),
               label: const Text('I\'m in the car'),

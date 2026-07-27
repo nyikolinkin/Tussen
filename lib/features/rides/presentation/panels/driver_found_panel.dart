@@ -6,6 +6,7 @@ import '../../domain/models/ride_stage.dart';
 import '../../providers/ride_state_provider.dart';
 import '../widgets/driver_card.dart';
 import '../widgets/ride_bottom_panel.dart';
+import '../../../rides/providers/ride_controller_provider.dart';
 
 class DriverFoundPanel extends ConsumerWidget {
   final Driver driver;
@@ -47,13 +48,26 @@ class DriverFoundPanel extends ConsumerWidget {
             width: double.infinity,
             child: ElevatedButton(
               onPressed: () {
-                ref
-                    .read(rideStateProvider.notifier)
-                    .setStage(RideStage.waitingForDriver);
+                ref.read(rideControllerProvider).acceptRide();
               },
               child: const Text('Request Ride'),
             ),
           ),
+
+          const SizedBox(height: 12),
+
+          SizedBox(
+            width: double.infinity,
+              child: OutlinedButton(
+                onPressed: () {
+                ref
+                .read(rideStateProvider.notifier)
+                .setStage(RideStage.cancelled);
+              },
+              child: const Text('Cancel'),
+            ),
+          ),
+
         ],
       ),
     );

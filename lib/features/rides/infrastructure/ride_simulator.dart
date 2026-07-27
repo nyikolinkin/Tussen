@@ -1,16 +1,41 @@
 import 'dart:async';
 
 import '../domain/models/ride_stage.dart';
-import '../providers/ride_state_provider.dart';
 
 class RideSimulator {
-  final RideStateNotifier notifier;
+  Timer? _timer;
 
-  RideSimulator(this.notifier);
+  final void Function(RideStage stage) onStageChanged;
 
-  Future<void> simulateAcceptance() async {
-    await Future.delayed(const Duration(seconds: 3));
+  RideSimulator({
+    required this.onStageChanged,
+  });
 
-    notifier.setStage(RideStage.accepted);
+  void start() {
+    _timer?.cancel();
+
+    final stages = [
+      RideStage.driverFound,
+    ];
+
+    int index = 0;
+
+    _timer = Timer.periodic(
+      const Duration(seconds: 3),
+      (timer) {
+        if (index >= stages.length) {
+          timer.cancel();
+          return;
+        }
+
+        onStageChanged(stages[index]);
+
+        index++;
+      },
+    );
+  }
+
+  void stop() {
+    _timer?.cancel();
   }
 }

@@ -10,7 +10,7 @@ import '../../../core/providers/location_provider.dart';
 import '../../../core/widgets/tussen_button.dart';
 import '../../../core/widgets/tussen_location_card.dart';
 import '../../passenger/presentation/scaffolds/passenger_scaffold.dart';
-//import '../../../features/rides/presentation/screens/searching_driver_screen.dart';
+import '../../rides/providers/ride_controller_provider.dart';
 
 class PassengerHomeScreen extends ConsumerWidget {
   const PassengerHomeScreen({super.key});
@@ -68,8 +68,9 @@ class PassengerHomeScreen extends ConsumerWidget {
           TussenButton(
             text: 'Request Ride',
             onPressed: () {
-              context.push(AppRoutes.rideTracking);
-  },
+              ref.read(rideControllerProvider).requestRide();
+                context.push(AppRoutes.rideTracking);
+              },
           ),
         ],
       ),

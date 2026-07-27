@@ -11,7 +11,6 @@ class RideStateNotifier extends StateNotifier<RideState> {
       : super(
           const RideState(
             stage: RideStage.searching,
-
             driver: Driver(
               id: 'drv_001',
               name: 'Thandi M.',
@@ -26,18 +25,21 @@ class RideStateNotifier extends StateNotifier<RideState> {
           ),
         );
 
+  // ✅ NEW: Expose the current ride stage safely
+  RideStage get currentStage => state.stage;
+
   void setStage(RideStage stage) {
-    // ✅ DEBUG
+    // DEBUG
     print('Changing stage: ${state.stage} -> $stage');
 
     state = state.copyWith(stage: stage);
 
-    // ✅ DEBUG
+    // DEBUG
     print('Current stage is now: ${state.stage}');
   }
 
   void nextStage() {
-    // ✅ DEBUG
+    // DEBUG
     print('Next Stage button pressed');
 
     switch (state.stage) {

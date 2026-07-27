@@ -1,51 +1,141 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter/material.dart';
+
+import '../../../core/maps/providers/map_state_provider.dart';
+import '../../../core/maps/services/map_simulator.dart';
 
 import '../domain/models/ride_stage.dart';
 import '../infrastructure/ride_simulator.dart';
 import '../providers/ride_state_provider.dart';
 
 class RideController {
-  final Ref ref;
+  final MapStateNotifier mapNotifier;
+  final RideStateNotifier rideNotifier;
 
-  RideController(this.ref);
+  late final RideSimulator _rideSimulator;
+  MapSimulator? _mapSimulator;
 
-  RideStateNotifier get _notifier =>
-      ref.read(rideStateProvider.notifier);
+  RideController({
+    required this.rideNotifier,
+    required this.mapNotifier,
+  }) {
+    _rideSimulator = RideSimulator(
+      onStageChanged: _handleRideStage,
+    );
+  }
 
-  /// Passenger requests a ride
+  // ==========================================================
+  // Called ONLY by RideSimulator.
+  //
+  // RideSimulator now only simulates:
+  // Searching -> Driver Found
+  //
+  // It no longer starts the taxi.
+  // ==========================================================
+  void _handleRideStage(RideStage stage) {
+    rideNotifier.setStage(stage);
+  }
+
+  // ==========================================================
+  // Generic journey engine.
+  //
+  // It doesn't care whether it is:
+  // - Driver -> Pickup
+  // - Pickup -> Destination
+  // - Parcel Delivery
+  // - Food Delivery
+  //
+  // It simply moves from A to B.
+  // ==========================================================
+  void _startJourney({
+  required Offset start,
+  required Offset destination,
+  required RideStage startedStage,
+  required RideStage completedStage,
+}) {
+
+  _mapSimulator?.stop();
+  print("Starting journey");
+  print("From: $start");
+  print("To: $destination");
+
+  _mapSimulator = MapSimulator(
+    start: start,
+    destination: destination,
+
+    onDriverMoved: mapNotifier.moveDriver,
+
+    onJourneyStarted: () {
+      rideNotifier.setStage(startedStage);
+    },
+
+    onJourneyCompleted: () {
+      rideNotifier.setStage(completedStage);
+    },
+  );
+
+  _mapSimulator!.startSimulation();
+}
+
+  // ==========================================================
+  // Starts searching for a driver.
+  // ==========================================================
   void requestRide() {
-    _notifier.setStage(RideStage.waitingForDriver);
-
-    RideSimulator(_notifier).simulateAcceptance();
+    _rideSimulator.start();
   }
 
-  /// Passenger cancels the ride
+  // ==========================================================
+  // Passenger confirms the driver.
+  //
+  // (In production this will eventually happen after the
+  // driver accepts via the Driver App.)
+  // ==========================================================
+  Future<void> acceptRide() async {
+    rideNotifier.setStage(RideStage.waitingForDriver);
+
+    await Future.delayed(const Duration(seconds: 2));
+
+    rideNotifier.setStage(RideStage.accepted);
+
+    // -------------------------------
+    // JOURNEY 1
+    // Driver -> Pickup
+    // -------------------------------
+    _startJourney(
+  start: mapNotifier.state.driverPosition,
+  destination: mapNotifier.state.pickupPosition,
+  startedStage: RideStage.driverArriving,
+  completedStage: RideStage.driverArrived,
+);
+  }
+
+  // ==========================================================
+  // Passenger is now inside the vehicle.
+  //
+  // (Later the Driver App will trigger this.)
+  // ==========================================================
+  Future<void> startTrip() async {
+  print("========== START TRIP ==========");
+
+  rideNotifier.setStage(RideStage.tripStarted);
+  print("Stage -> Trip Started");
+
+  _startJourney(
+    start: mapNotifier.state.driverPosition,
+    destination: mapNotifier.state.destinationPosition,
+    startedStage: RideStage.tripInProgress,
+    completedStage: RideStage.tripCompleted,
+  );
+
+  print("Journey started");
+}
+
+  // ==========================================================
+  // Cancels everything.
+  // ==========================================================
   void cancelRide() {
-    _notifier.setStage(RideStage.cancelled);
-  }
+    _rideSimulator.stop();
+    _mapSimulator?.stop();
 
-  /// Driver accepted
-  void driverAccepted() {
-    _notifier.setStage(RideStage.accepted);
-  }
-
-  /// Driver is on the way
-  void driverArriving() {
-    _notifier.setStage(RideStage.driverArriving);
-  }
-
-  /// Driver reached pickup
-  void driverArrived() {
-    _notifier.setStage(RideStage.driverArrived);
-  }
-
-  /// Trip started
-  void startTrip() {
-    _notifier.setStage(RideStage.tripStarted);
-  }
-
-  /// Trip completed
-  void completeTrip() {
-    _notifier.setStage(RideStage.tripCompleted);
+    rideNotifier.setStage(RideStage.cancelled);
   }
 }
