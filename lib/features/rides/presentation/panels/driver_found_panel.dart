@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../domain/models/driver.dart';
-import '../../domain/models/ride_stage.dart';
-import '../../providers/ride_state_provider.dart';
 import '../widgets/driver_card.dart';
 import '../widgets/ride_bottom_panel.dart';
 import '../../../rides/providers/ride_controller_provider.dart';
@@ -47,10 +45,12 @@ class DriverFoundPanel extends ConsumerWidget {
           SizedBox(
             width: double.infinity,
             child: ElevatedButton(
-              onPressed: () {
-                ref.read(rideControllerProvider).acceptRide();
+              onPressed: () async {
+                await ref
+                    .read(rideControllerProvider)
+                    .confirmDriver();
               },
-              child: const Text('Request Ride'),
+              child: const Text('Accept Ride'),
             ),
           ),
 
@@ -58,16 +58,15 @@ class DriverFoundPanel extends ConsumerWidget {
 
           SizedBox(
             width: double.infinity,
-              child: OutlinedButton(
-                onPressed: () {
+            child: OutlinedButton(
+              onPressed: () {
                 ref
-                .read(rideStateProvider.notifier)
-                .setStage(RideStage.cancelled);
+                    .read(rideControllerProvider)
+                    .cancelRide();
               },
               child: const Text('Cancel'),
             ),
           ),
-
         ],
       ),
     );

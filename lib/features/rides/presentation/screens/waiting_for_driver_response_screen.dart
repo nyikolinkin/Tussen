@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../app/theme/app_text_styles.dart';
-import '../../domain/models/driver.dart';
+import '../../providers/ride_state_provider.dart';
 import '../widgets/driver_card.dart';
 
-class WaitingForDriverResponseScreen extends StatelessWidget {
-  final Driver driver;
-
+class WaitingForDriverResponseScreen extends ConsumerWidget {
   const WaitingForDriverResponseScreen({
     super.key,
-    required this.driver,
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final ride = ref.watch(rideStateProvider);
+    final driver = ride.driver;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Ride Request'),
@@ -29,7 +30,9 @@ class WaitingForDriverResponseScreen extends StatelessWidget {
             const SizedBox(height: 30),
 
             Text(
-              'Waiting for ${driver.name}',
+              driver != null
+                  ? 'Waiting for ${driver.name}'
+                  : 'Finding your driver...',
               style: AppTextStyles.heading1,
               textAlign: TextAlign.center,
             ),
@@ -44,7 +47,8 @@ class WaitingForDriverResponseScreen extends StatelessWidget {
 
             const SizedBox(height: 40),
 
-            DriverCard(driver: driver),
+            if (driver != null)
+              DriverCard(driver: driver),
 
             const Spacer(),
           ],

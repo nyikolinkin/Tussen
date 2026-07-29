@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 
 import '../../domain/models/driver.dart';
 import 'driver_avatar.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class DriverCard extends StatelessWidget {
+import '../../providers/ride_state_provider.dart';
+
+class DriverCard extends ConsumerWidget {
   final Driver driver;
 
   const DriverCard({
@@ -11,8 +14,32 @@ class DriverCard extends StatelessWidget {
     required this.driver,
   });
 
+  
   @override
-  Widget build(BuildContext context) {
+  Widget build(
+  BuildContext context,
+  WidgetRef ref,
+) {
+    final ride = ref.watch(rideStateProvider);
+    String etaText;
+
+if (ride.etaSeconds <= 0) {
+  etaText = 'Arriving';
+} else if (ride.etaSeconds < 60) {
+  etaText = '${ride.etaSeconds} sec';
+} else {
+  etaText =
+      '${(ride.etaSeconds / 60).ceil()} min';
+}
+    String distanceText;
+
+if (ride.remainingDistance >= 1000) {
+  distanceText =
+      '${(ride.remainingDistance / 1000).toStringAsFixed(1)} km';
+} else {
+  distanceText =
+      '${ride.remainingDistance.round()} m';
+}
     return Card(
       elevation: 2,
       shape: RoundedRectangleBorder(
@@ -101,12 +128,12 @@ class DriverCard extends StatelessWidget {
                           borderRadius: BorderRadius.circular(20),
                         ),
                         child: Text(
-                          'ETA ${driver.etaMinutes} min',
-                          style: TextStyle(
-                            color: Colors.green.shade700,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
+                                  '$etaText • $distanceText',
+                                  style: TextStyle(
+                                  color: Colors.green.shade700,
+                                  fontWeight: FontWeight.w600,
+                              ),
+                          )
                       ),
                     ],
                   ),

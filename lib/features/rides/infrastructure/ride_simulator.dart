@@ -1,36 +1,19 @@
 import 'dart:async';
 
-import '../domain/models/ride_stage.dart';
-
 class RideSimulator {
   Timer? _timer;
 
-  final void Function(RideStage stage) onStageChanged;
+  RideSimulator();
 
-  RideSimulator({
-    required this.onStageChanged,
-  });
-
-  void start() {
+  void start({
+    required Future<void> Function() onFinished,
+  }) {
     _timer?.cancel();
 
-    final stages = [
-      RideStage.driverFound,
-    ];
-
-    int index = 0;
-
-    _timer = Timer.periodic(
+    _timer = Timer(
       const Duration(seconds: 3),
-      (timer) {
-        if (index >= stages.length) {
-          timer.cancel();
-          return;
-        }
-
-        onStageChanged(stages[index]);
-
-        index++;
+      () {
+        onFinished();
       },
     );
   }

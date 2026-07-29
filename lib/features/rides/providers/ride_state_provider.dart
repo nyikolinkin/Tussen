@@ -1,7 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../core/enums/driver_status.dart';
-import '../../../../core/enums/gender.dart';
 import '../domain/models/driver.dart';
 import '../domain/models/ride_stage.dart';
 import '../domain/models/ride_state.dart';
@@ -11,37 +9,55 @@ class RideStateNotifier extends StateNotifier<RideState> {
       : super(
           const RideState(
             stage: RideStage.searching,
-            driver: Driver(
-              id: 'drv_001',
-              name: 'Thandi M.',
-              gender: Gender.female,
-              status: DriverStatus.available,
-              vehicle: 'Toyota Starlet',
-              vehicleColor: 'White',
-              registrationNumber: 'KXY 214 MP',
-              rating: 5.0,
-              etaMinutes: 2,
-            ),
+            driver: null,
           ),
         );
 
-  // ✅ NEW: Expose the current ride stage safely
   RideStage get currentStage => state.stage;
 
+  Driver? get currentDriver => state.driver;
+
   void setStage(RideStage stage) {
-    // DEBUG
     print('Changing stage: ${state.stage} -> $stage');
 
-    state = state.copyWith(stage: stage);
+    state = state.copyWith(
+      stage: stage,
+    );
 
-    // DEBUG
     print('Current stage is now: ${state.stage}');
   }
 
-  void nextStage() {
-    // DEBUG
-    print('Next Stage button pressed');
+  // ==========================================================
+  // NEW
+  // Sets the driver assigned by DispatchService
+  // ==========================================================
+  void setDriver(Driver driver) {
+  state = state.copyWith(
+    driver: driver,
+  );
+}
 
+  // ==========================================================
+  // NEW
+  // Clears the driver after cancellation/completion
+  // ==========================================================
+  void clearDriver() {
+  state = state.copyWith(
+    clearDriver: true,
+  );
+}
+
+  void updateEta({
+  required double remainingDistance,
+  required int etaSeconds,
+}) {
+  state = state.copyWith(
+    remainingDistance: remainingDistance,
+    etaSeconds: etaSeconds,
+  );
+}
+
+  void nextStage() {
     switch (state.stage) {
       case RideStage.searching:
         setStage(RideStage.driverFound);
@@ -78,7 +94,10 @@ class RideStateNotifier extends StateNotifier<RideState> {
       case RideStage.tripCompleted:
       case RideStage.cancelled:
       case RideStage.noDriverFound:
-        setStage(RideStage.searching);
+        state = const RideState(
+          stage: RideStage.searching,
+          driver: null,
+        );
         break;
     }
   }

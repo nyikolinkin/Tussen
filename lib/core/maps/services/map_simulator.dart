@@ -2,77 +2,79 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import '../../../core/maps/constants/map_constants.dart';
 
 class MapSimulator {
-  final Offset start;
-  final Offset destination;
-
-  /// Called every time the driver's position changes.
-  final void Function(Offset position) onDriverMoved;
-
   // ==========================================================
   // NEW
   //
-  // Called once when the taxi starts moving.
+  // Which driver is being moved?
   //
-  // This allows RideController to change the ride stage to
-  // Trip In Progress, Driver Arriving, etc.
+  // This allows one simulator to move ANY taxi.
   // ==========================================================
-  final VoidCallback? onJourneyStarted;
+  final String driverId;
+
+  final Offset start;
+  final Offset destination;
 
   // ==========================================================
-  // Called once when the taxi reaches its destination.
+  // CHANGED
+  //
+  // We now tell the listener BOTH:
+  // - which driver moved
+  // - where it moved to
   // ==========================================================
+  final void Function(
+    String driverId,
+    Offset position,
+  ) onDriverMoved;
+
+  final VoidCallback? onJourneyStarted;
   final VoidCallback? onJourneyCompleted;
+  
 
   Timer? _timer;
 
   MapSimulator({
-    required this.start,
-    required this.destination,
-    required this.onDriverMoved,
-
-    // NEW
-    this.onJourneyStarted,
-
-    this.onJourneyCompleted,
-  });
+  required this.driverId,
+  required this.start,
+  required this.destination,
+  required this.onDriverMoved,
+  this.onJourneyStarted,
+  this.onJourneyCompleted,
+  this.onDistanceChanged,
+});
 
   void startSimulation() {
     _timer?.cancel();
 
     Offset current = start;
 
-    // ==========================================================
-    // Ensure the taxi starts exactly where this journey begins.
-    // ==========================================================
-    onDriverMoved(current);
-
-    // ==========================================================
-    // NEW
-    //
-    // Notify the controller that movement has begun.
-    //
-    // The simulator does NOT decide what stage comes next.
-    // It simply reports:
-    // "I'm moving now."
-    // ==========================================================
+    // Notify that the journey has started.
     onJourneyStarted?.call();
-    print("MapSimulator started");
+
+    // Place the driver exactly at the starting point.
+    onDriverMoved(
+      driverId,
+      current,
+    );
 
     _timer = Timer.periodic(
-      const Duration(milliseconds: 50),
+      MapConstants.simulationTick,
       (timer) {
-        const speed = 2.0;
+        final speed = MapConstants.unitsPerTick;
 
         final dx = destination.dx - current.dx;
         final dy = destination.dy - current.dy;
 
         final distance = sqrt(dx * dx + dy * dy);
-
+        onDistanceChanged?.call(distance);
         if (distance <= speed) {
           // Snap exactly onto the destination.
-          onDriverMoved(destination);
+          onDriverMoved(
+            driverId,
+            destination,
+          );
 
           timer.cancel();
 
@@ -83,14 +85,20 @@ class MapSimulator {
         }
 
         current = Offset(
-          current.dx + (dx / distance) * speed,
-          current.dy + (dy / distance) * speed,
+          current.dx + dx / distance * speed,
+          current.dy + dy / distance * speed,
+          
         );
-
-        onDriverMoved(current);
+        
+        onDriverMoved(
+          driverId,
+          current,
+        );
       },
     );
   }
+
+  final void Function(double remainingDistance)? onDistanceChanged;
 
   void stop() {
     _timer?.cancel();

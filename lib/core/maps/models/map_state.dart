@@ -1,31 +1,52 @@
 import 'package:flutter/material.dart';
 
+import 'map_driver.dart'; // <-- NEW
+
 class MapState {
   final Offset passengerPosition;
-  final Offset driverPosition;
+
+  // ==========================================================
+  // CHANGED
+  //
+  // Was:
+  // final Offset driverPosition;
+  //
+  // Now we support multiple drivers.
+  // ==========================================================
+  final List<MapDriver> drivers;
+
   final Offset pickupPosition;
   final Offset destinationPosition;
 
   const MapState({
     required this.passengerPosition,
-    required this.driverPosition,
+
+    // CHANGED
+    required this.drivers,
+
     required this.pickupPosition,
     required this.destinationPosition,
   });
 
   MapState copyWith({
     Offset? passengerPosition,
-    Offset? driverPosition,
+
+    // CHANGED
+    List<MapDriver>? drivers,
+
     Offset? pickupPosition,
     Offset? destinationPosition,
   }) {
     return MapState(
       passengerPosition:
           passengerPosition ?? this.passengerPosition,
-      driverPosition:
-          driverPosition ?? this.driverPosition,
+
+      // CHANGED
+      drivers: drivers ?? this.drivers,
+
       pickupPosition:
           pickupPosition ?? this.pickupPosition,
+
       destinationPosition:
           destinationPosition ?? this.destinationPosition,
     );

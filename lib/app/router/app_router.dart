@@ -1,5 +1,4 @@
 import 'package:go_router/go_router.dart';
-import 'package:tussen/features/rides/presentation/screens/available_drivers_screen.dart';
 
 import 'app_routes.dart';
 import 'custom_transition_page.dart';
@@ -18,7 +17,6 @@ import '../../features/passenger/presentation/wallet_screen.dart';
 import '../../features/splash/presentation/splash_screen.dart';
 import '../../../features/rides/presentation/screens/driver_found_screen.dart';
 import '../../../features/rides/presentation/screens/searching_driver_screen.dart';
-import '../../features/rides/domain/models/driver.dart';
 import '../../features/rides/presentation/screens/waiting_for_driver_response_screen.dart';
 import '../../features/rides/presentation/screens/ride_tracking_screen.dart';
 
@@ -135,22 +133,11 @@ class AppRouter {
       ),
 
       GoRoute(
-        path: AppRoutes.availableDrivers,
-        pageBuilder: (context, state) => buildPageWithTransition(
-          state: state,
-          child: const AvailableDriversScreen(),
-        ),
-      ),
-
-      GoRoute(
   path: AppRoutes.waitingForDriverResponse,
-  builder: (context, state) {
-    final driver = state.extra as Driver;
-
-    return WaitingForDriverResponseScreen(
-      driver: driver,
-    );
-  },
+  pageBuilder: (context, state) => buildPageWithTransition(
+    state: state,
+    child: const WaitingForDriverResponseScreen(),
+  ),
 ),
 
     GoRoute(
