@@ -11,6 +11,8 @@ import '../../../core/widgets/tussen_button.dart';
 import '../../../core/widgets/tussen_location_card.dart';
 import '../../passenger/presentation/scaffolds/passenger_scaffold.dart';
 import '../../rides/providers/ride_controller_provider.dart';
+import '../../fares/providers/fare_controller_provider.dart';
+import '../../../core/maps/providers/map_state_provider.dart';
 
 class PassengerHomeScreen extends ConsumerWidget {
   const PassengerHomeScreen({super.key});
@@ -19,6 +21,11 @@ class PassengerHomeScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final pickupLocation = ref.watch(pickupLocationProvider);
     final destination = ref.watch(destinationProvider);
+    final mapState = ref.watch(mapStateProvider);
+    final fare = ref.read(fareControllerProvider).estimateFare(
+  pickup: mapState.pickupPosition,
+  destination: mapState.destinationPosition,
+);
 
     return PassengerScaffold(
       currentTab: PassengerTab.home,
@@ -62,6 +69,35 @@ class PassengerHomeScreen extends ConsumerWidget {
               );
             },
           ),
+
+          const SizedBox(height: 24),
+
+Card(
+  elevation: 2,
+  child: Padding(
+    padding: const EdgeInsets.all(16),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        const Text(
+          'Estimated Fare',
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        Text(
+          'R${fare.totalFare.toStringAsFixed(2)}',
+          style: const TextStyle(
+            fontSize: 22,
+            fontWeight: FontWeight.bold,
+            color: Colors.green,
+          ),
+        ),
+      ],
+    ),
+  ),
+),
 
           const Spacer(),
 
